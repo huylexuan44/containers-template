@@ -1,0 +1,34 @@
+# Slots bot 24/7 — chạy từ repo root:
+#   docker compose -f containers-template/docker-compose.slots.yml up --build
+#
+# Cần sẵn:
+#   containers-template/slots-bot/.env  (token + session acc1)
+#   utility-mezon-bot/tools/slots-cli/accounts.json
+
+services:
+  slots1-bot:
+    build:
+      context: ..
+      dockerfile: containers-template/slots-bot/Dockerfile
+    env_file:
+      - ./slots-bot/.env
+    environment:
+      SLOTS_GAME: slots1
+      SLOTS_ACCOUNT: acc1
+      MIN_JACKPOT: "250000"
+      MIN_EV: "-95"
+      MAX_QUEUE: "9999"
+      POLL: "3000"
+      RECHECK: "0"
+      TOP10_EVERY: "0"
+      OUTPUT: reports/acc1-slots1k.json
+      NODE_ENV: production
+    volumes:
+      - ../utility-mezon-bot/tools/slots-cli/accounts.json:/app/accounts.json:ro
+      - ../utility-mezon-bot/tools/slots-cli/reports:/app/reports
+      - slots-cli-sessions:/app/.sessions
+    restart: unless-stopped
+    init: true
+
+volumes:
+  slots-cli-sessions:
