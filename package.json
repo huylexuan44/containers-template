@@ -28,6 +28,8 @@
 		"cf-typegen": "wrangler types",
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev",
-		"start": "wrangler dev"
+		"start": "wrangler dev",
+		"sync:env": "node slots-bot/sync-env.mjs",
+		"secrets:push": "bash scripts/push-wrangler-secrets.sh"
 	}
 }

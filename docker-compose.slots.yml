@@ -2,8 +2,7 @@
 #   docker compose -f containers-template/docker-compose.slots.yml up --build
 #
 # Cần sẵn:
-#   containers-template/slots-bot/.env  (token + session acc1)
-#   utility-mezon-bot/tools/slots-cli/accounts.json
+#   containers-template/slots-bot/.env  — npm run sync:env
 
 services:
   slots1-bot:
@@ -24,7 +23,6 @@ services:
       OUTPUT: reports/acc1-slots1k.json
       NODE_ENV: production
     volumes:
-      - ../utility-mezon-bot/tools/slots-cli/accounts.json:/app/accounts.json:ro
       - ../utility-mezon-bot/tools/slots-cli/reports:/app/reports
       - slots-cli-sessions:/app/.sessions
     restart: unless-stopped

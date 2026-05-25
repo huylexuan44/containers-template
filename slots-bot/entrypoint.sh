@@ -1,9 +1,27 @@
 #!/bin/sh
 set -e
 
+ACC="${SLOTS_ACCOUNT:-acc1}"
+
+# accounts.json từ env (không cần mount file host)
+if [ -n "${MEZON_TOKEN:-}" ] && [ ! -f /app/accounts.json ]; then
+  cat > /app/accounts.json <<EOF
+{
+  "accounts": [
+    {
+      "id": "${ACC}",
+      "label": "Acc 1",
+      "token": "${MEZON_TOKEN}",
+      "userId": "${MEZON_USER_ID:-}"
+    }
+  ]
+}
+EOF
+  echo "[slots-bot] accounts.json → /app/accounts.json (${ACC})"
+fi
+
 # Ghi session WS từ .env → .sessions/<acc>.session.json (tránh cold start trong container)
 if [ -n "${MEZON_TOKEN}${MEZON_SESSION_ID}" ]; then
-  ACC="${SLOTS_ACCOUNT:-acc1}"
   mkdir -p /app/.sessions
   SESSION_FILE="/app/.sessions/${ACC}.session.json"
   cat > "$SESSION_FILE" <<EOF
